@@ -1,5 +1,5 @@
 /**
- * @file enc_init.h
+ * @file enc_hardware_integration.h
  * @author Sławomir Kozok (slawomir.kozok@mipso.pl)
  * @brief This file contains placeholder implementation for hardware integration functions
  * @date 2021-08-25

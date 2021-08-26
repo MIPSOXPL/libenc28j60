@@ -1,7 +1,7 @@
 /**
- * @file enc_init.h
+ * @file enc_const.h
  * @author Sławomir Kozok (slawomir.kozok@mipso.pl)
- * @brief This file contains all initialisation procedures and functions for ENC28J60 integrated circuit
+ * @brief This file constants used for driver
  * @date 2021-08-23
  * 
  * @copyright Copyright (c) MIPSO Sławomir Kozok 2021
