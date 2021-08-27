@@ -18,3 +18,7 @@
 extern bool spi_send_data(const uint16_t address, const uint8_t* data, int data_length);
 extern bool spi_receive_data(const uint16_t address, int data_length, uint8_t* buffer, int buffer_size);
 
+void enc_init_receive_buffer(enc_data_t* enc_data, uint16_t receive_buffer_offset, uint16_t receive_buffer_size)
+{
+
+}

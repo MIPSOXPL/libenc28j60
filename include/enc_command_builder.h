@@ -12,7 +12,7 @@
 #ifndef ENC_COMMAND_BUILDER_H
 #define ENC_COMMAND_BUILDER_H
 
-#include "enc_struct.h"
+#include "enc_data.h"
 #include "enc_buffer.h"
 
 typedef enum {

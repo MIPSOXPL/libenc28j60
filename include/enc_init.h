@@ -12,7 +12,8 @@
 #ifndef ENC_INIT_H
 #define ENC_INIT_H
 
-void enc_init_receive_buffer(int receive_buffer_size);
-void enc_init_transmit_buffer(int receive_buffer_size);
+#include "enc_data.h"
+
+void enc_init_receive_buffer(enc_data_t* enc_data, uint16_t receive_buffer_offset, uint16_t receive_buffer_size);
 
 #endif //ENC_INIT_H
