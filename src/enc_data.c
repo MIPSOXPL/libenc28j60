@@ -40,3 +40,8 @@ void enc_data_clear_output_buffer(enc_data_t* enc_data)
         enc_buffer_clear(enc_data->out_buffer);
     }
 }
+
+bool enc_is_data_valid(enc_data_t* enc_data)
+{
+    return enc_data != NULL && enc_is_buffer_valid(enc_data->in_buffer) && enc_is_buffer_valid(enc_data->out_buffer);
+}

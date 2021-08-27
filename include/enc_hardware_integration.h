@@ -14,8 +14,9 @@
 
 #include "stdint.h"
 #include "stdbool.h"
+#include "enc_buffer.h"
 
-bool spi_send_data(const uint16_t address, const uint8_t* data, int data_length);
-bool spi_receive_data(const uint16_t address, int data_length, uint8_t* buffer, int buffer_size);
+bool spi_send_data(enc_buffer_t* enc_buffer);
+bool spi_receive_data(enc_buffer_t* enc_buffer, uint16_t data_length);
 
 #endif //ENC_HARDWARE_INTEGRATION_H

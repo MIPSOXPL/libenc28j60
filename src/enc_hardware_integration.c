@@ -11,17 +11,13 @@
 
 #include "enc_hardware_integration.h"
 
-__attribute__((weak)) bool spi_send_data(__attribute__((unused)) const uint16_t address,
-                                         __attribute__((unused)) const uint8_t* data, 
-                                         __attribute__((unused)) int data_length)
+__attribute__((weak)) bool spi_send_data(__attribute__((unused)) enc_buffer_t* enc_buffer)
 {
 
 }
 
-__attribute__((weak)) bool spi_receive_data(__attribute__((unused)) const uint16_t address, 
-                                            __attribute__((unused)) int data_length, 
-                                            __attribute__((unused)) uint8_t* buffer,
-                                            __attribute__((unused)) int buffer_size)
+__attribute__((weak)) bool spi_receive_data(__attribute__((unused)) enc_buffer_t* enc_buffer,
+                                            __attribute__((unused)) uint16_t data_length)
 {
 
 }

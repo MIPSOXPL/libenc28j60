@@ -1,7 +1,8 @@
 cmake_minimum_required(VERSION 3.10)
 
 project(libenc28j60)
-set(ENC_SRC src/enc_init.c
+set(ENC_SRC src/enc_utils.c
+            src/enc_init.c
             src/enc_hardware_integration.c
             src/enc_data.c
             src/enc_command_builder.c

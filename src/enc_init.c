@@ -11,14 +11,36 @@
 
 #include "enc_init.h"
 #include "enc_command_builder.h"
+#include "enc_const.h"
+#include "enc_utils.h"
 
 #include "stdint.h"
 #include "stdbool.h"
 
-extern bool spi_send_data(const uint16_t address, const uint8_t* data, int data_length);
-extern bool spi_receive_data(const uint16_t address, int data_length, uint8_t* buffer, int buffer_size);
+extern bool spi_send_data(enc_buffer_t* enc_buffer);
+extern bool spi_receive_data(enc_buffer_t* enc_buffer, uint16_t data_length);
 
-void enc_init_receive_buffer(enc_data_t* enc_data, uint16_t receive_buffer_offset, uint16_t receive_buffer_size)
+bool enc_init_receive_buffer(enc_data_t* enc_data, uint16_t receive_buffer_offset, uint16_t receive_buffer_size)
 {
+    if(enc_is_data_valid(enc_data))
+    {
+        //Program buffers size
+        enc_select_bank(enc_data, ENC_0_BANK);
+        enc_write_control_register(enc_data->out_buffer, ENC_ERXSTH_REG_ADDR, (receive_buffer_offset & 0xFF00) >> 8);
+        spi_send_data(enc_data->out_buffer);
+        enc_write_control_register(enc_data->out_buffer, ENC_ERXSTL_REG_ADDR, (receive_buffer_offset & 0x00FF));
+        spi_send_data(enc_data->out_buffer);
+        enc_write_control_register(enc_data->out_buffer, ENC_ERXNDH_REG_ADDR, ((receive_buffer_offset + receive_buffer_size) & 0xFF00) >> 8);
+        spi_send_data(enc_data->out_buffer);
+        enc_write_control_register(enc_data->out_buffer, ENC_ERXNDL_REG_ADDR, ((receive_buffer_offset + receive_buffer_size) & 0x00FF));
+        spi_send_data(enc_data->out_buffer);
 
+        //Program readout pointer (lower byte first)
+        enc_write_control_register(enc_data->out_buffer, ENC_ERXRDPTL_REG_ADDR, ((receive_buffer_offset & 0xFF00) >> 8));
+        spi_send_data(enc_data->out_buffer);
+        enc_write_control_register(enc_data->out_buffer, ENC_ERXRDPTH_REG_ADDR, (receive_buffer_offset & 0x00FF));
+        spi_send_data(enc_data->out_buffer);
+        return true;
+    }
+    return false;
 }
