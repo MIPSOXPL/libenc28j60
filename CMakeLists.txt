@@ -4,7 +4,8 @@ project(libenc28j60)
 set(ENC_SRC src/enc_init.c
             src/enc_hardware_integration.c
             src/enc_struct.c
-            src/enc_command_builder.c)
+            src/enc_command_builder.c
+            src/enc_buffer.c)
 set(ENC_INCLUDE include/)
 
 add_library(enc28j60 ${ENC_SRC})

@@ -16,17 +16,14 @@
 #include <stdbool.h>
 #include <stddef.h>
 
-typedef struct {
-    uint8_t* output_buffer;
-    uint16_t output_buffer_size;
-    uint8_t* input_buffer;
-    uint16_t input_buffer_size;
+#include "enc_buffer.h"
 
-    uint16_t output_buffer_data_counter;
-    uint16_t input_buffer_data_counter;    
+typedef struct {
+    enc_buffer_t* in_buffer;
+    enc_buffer_t* out_buffer;
 } enc_struct_t;
 
-bool enc_init_enc_struct(enc_struct_t* enc_struct, uint8_t* output_buffer, uint8_t output_buffer_size, uint8_t* input_buffer, uint8_t input_buffer_size);
+bool enc_init_enc_struct(enc_struct_t* enc_struct, enc_buffer_t* in_buffer, enc_buffer_t* out_buffer);
 void enc_clear_input_buffer(enc_struct_t* enc_struct);
 void enc_clear_output_buffer(enc_struct_t* enc_struct);
 

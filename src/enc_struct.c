@@ -11,17 +11,16 @@
 
 #include "enc_struct.h"
 
-bool enc_init_enc_struct(enc_struct_t* enc_struct, uint8_t* output_buffer, uint8_t output_buffer_size, uint8_t* input_buffer, uint8_t input_buffer_size)
+bool enc_init_enc_struct(enc_struct_t* enc_struct, enc_buffer_t* in_buffer, enc_buffer_t* out_buffer)
 {
-    if(enc_struct != NULL && output_buffer != NULL && output_buffer_size > 0 && input_buffer != NULL && input_buffer_size > 0)
+    if(enc_struct != NULL)
     {
-        enc_struct->input_buffer = input_buffer;
-        enc_struct->input_buffer_size = input_buffer_size;
-        enc_struct->output_buffer = output_buffer;
-        enc_struct->output_buffer_size = output_buffer_size;
-        enc_struct->output_buffer_data_counter = 0;
-        enc_struct->input_buffer_data_counter = 0;
-        return true;
+        if(enc_is_buffer_valid(in_buffer) && enc_is_buffer_valid(out_buffer))
+        {
+            enc_struct->in_buffer = in_buffer;
+            enc_struct->out_buffer = out_buffer;
+            return true;
+        }
     }
     return false;
 }
@@ -30,7 +29,7 @@ void enc_clear_input_buffer(enc_struct_t* enc_struct)
 {
     if(enc_struct != NULL)
     {
-        enc_struct->output_buffer_data_counter = 0;
+        enc_buffer_clear(enc_struct->in_buffer);
     }
 }
 
@@ -38,6 +37,6 @@ void enc_clear_output_buffer(enc_struct_t* enc_struct)
 {
     if(enc_struct != NULL)
     {
-        enc_struct->input_buffer_data_counter = 0;
+        enc_buffer_clear(enc_struct->out_buffer);
     }
 }
