@@ -16,13 +16,15 @@
 #include <stddef.h>
 #include <stdbool.h>
 
+#define ENC_BUFFER_SIZE 4096
+
 typedef struct {
     uint8_t* buffer;
     uint16_t buffer_size;
     uint16_t buffer_data_counter;
 } enc_buffer_t;
 
-bool enc_buffer_init(enc_buffer_t *buffer_struct, uint8_t* buffer, uint8_t buffer_size);
+bool enc_buffer_init(enc_buffer_t *buffer_struct, uint8_t* buffer, uint16_t buffer_size);
 bool enc_is_buffer_valid(enc_buffer_t* buffer_struct);
 void enc_buffer_clear(enc_buffer_t* buffer_struct);
 void enc_set_buffer_data_count(enc_buffer_t* buffer_struct, int data_count);

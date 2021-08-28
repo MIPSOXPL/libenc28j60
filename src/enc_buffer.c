@@ -11,7 +11,7 @@
 
 #include "enc_buffer.h"
 
-bool enc_buffer_init(enc_buffer_t *buffer_struct, uint8_t* buffer, uint8_t buffer_size)
+bool enc_buffer_init(enc_buffer_t *buffer_struct, uint8_t* buffer, uint16_t buffer_size)
 {
     if(buffer_struct != NULL && buffer != NULL && buffer_size > 0)
     {
