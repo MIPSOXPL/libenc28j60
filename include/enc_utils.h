@@ -19,4 +19,8 @@
 
 bool enc_select_bank(enc_data_t* enc_data, uint8_t bank);
 
+uint8_t enc_get_estat(enc_data_t* enc_data);
+
+uint8_t enc_get_mistat(enc_data_t* enc_data);
+
 #endif //ENC_UTILS_H
