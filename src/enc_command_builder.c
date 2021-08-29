@@ -14,8 +14,7 @@
 #include "enc_utils.h"
 #include "enc_const.h"
 
-extern bool spi_send_data(enc_buffer_t* enc_buffer);
-extern bool spi_receive_data(enc_buffer_t* enc_buffer, uint16_t data_length);
+#include "enc_hardware_integration.h"
 
 bool enc_read_control_register(enc_buffer_t* buffer_struct, uint8_t address)
 {
@@ -114,27 +113,30 @@ uint16_t enc_read_phy_register(enc_data_t* enc_data, uint8_t address)
 	enc_select_bank(enc_data, ENC_2_BANK);
 
 	enc_write_control_register(enc_data->out_buffer, ENC_MIREGADR_REG_ADDR, address);
-	spi_send_data(enc_data->out_buffer);
+	spi_send_data_nss(enc_data->out_buffer);
 
 	enc_write_control_register(enc_data->out_buffer, ENC_MICMD_REG_ADDR, 1);
-	spi_send_data(enc_data->out_buffer);
+	spi_send_data_nss(enc_data->out_buffer);
 
-	while((enc_get_mistat(enc_data) & 01) == 1);
+	delay_us(11);
+	while((enc_get_mistat(enc_data) & 1));
 
 	enc_select_bank(enc_data, ENC_2_BANK);
 
 	enc_write_control_register(enc_data->out_buffer, ENC_MICMD_REG_ADDR, 0);
-	spi_send_data(enc_data->out_buffer);
+	spi_send_data_nss(enc_data->out_buffer);
 
 	enc_read_control_register(enc_data->out_buffer, ENC_MIRDL_REG_ADDR);
 	spi_send_data(enc_data->out_buffer);
-	spi_receive_data(enc_data->in_buffer, 1);
+	spi_receive_data(enc_data->in_buffer, 2);
+
+	uint16_t data = enc_data->in_buffer->buffer[1];
 
 	enc_read_control_register(enc_data->out_buffer, ENC_MIRDH_REG_ADDR);
 	spi_send_data(enc_data->out_buffer);
-	spi_receive_data(enc_data->in_buffer + 1, 1);
+	spi_receive_data(enc_data->in_buffer, 2);
 
-	uint16_t data = (enc_data->in_buffer->buffer[1] << 8) + enc_data->in_buffer->buffer[0];
+	data += enc_data->in_buffer->buffer[1] << 8;
 	return data;
 }
 
@@ -147,15 +149,16 @@ bool enc_write_phy_register(enc_data_t* enc_data, uint8_t address, uint16_t valu
 	enc_select_bank(enc_data, ENC_2_BANK);
 
 	enc_write_control_register(enc_data->out_buffer, ENC_MIREGADR_REG_ADDR, address);
-	spi_send_data(enc_data->out_buffer);
+	spi_send_data_nss(enc_data->out_buffer);
 
 	enc_write_control_register(enc_data->out_buffer, ENC_MIWRL_REG_ADDR, value & 0xFF);
-	spi_send_data(enc_data->out_buffer);
+	spi_send_data_nss(enc_data->out_buffer);
 
 	enc_write_control_register(enc_data->out_buffer, ENC_MIWRH_REG_ADDR, value >> 8);
-	spi_send_data(enc_data->out_buffer);
+	spi_send_data_nss(enc_data->out_buffer);
 
-	while((enc_get_mistat(enc_data) & 01) == 1);
+	delay_us(11);
+	while((enc_get_mistat(enc_data) & 1));
 
 	return true;
 }

@@ -39,6 +39,8 @@ bool enc_init_receive_filters(enc_data_t* enc_data, uint8_t filters_value);
 
 bool enc_init_settings(enc_data_t* enc_data, enc_settings* settings);
 
+bool enc_init_phy(enc_data_t* enc_data);
+
 void enc_init_wait_for_ost(enc_data_t* enc_data);
 
 // private helpers functions

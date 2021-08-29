@@ -17,6 +17,11 @@
 #include "enc_buffer.h"
 
 bool spi_send_data(enc_buffer_t* enc_buffer);
+bool spi_send_data_nss(enc_buffer_t* enc_buffer);
 bool spi_receive_data(enc_buffer_t* enc_buffer, uint16_t data_length);
+
+void spi_set_enc_nss();
+void spi_reset_enc_nss();
+void delay_us(uint16_t time);
 
 #endif //ENC_HARDWARE_INTEGRATION_H
