@@ -34,7 +34,7 @@ uint8_t enc_get_estat(enc_data_t* enc_data)
 {
 	enc_read_control_register(enc_data->out_buffer, ENC_G_ESTAT_REG_ADDR);
 	spi_send_data(enc_data->out_buffer);
-	spi_receive_data(enc_data->in_buffer->buffer, 1);
+	spi_receive_data(enc_data->in_buffer, 1);
 	return enc_data->in_buffer->buffer[0];
 }
 
@@ -43,6 +43,6 @@ uint8_t enc_get_mistat(enc_data_t* enc_data)
 	enc_select_bank(enc_data, ENC_3_BANK);
 	enc_read_control_register(enc_data->out_buffer, ENC_MISTAT_REG_ADDR);
 	spi_send_data(enc_data->out_buffer);
-	spi_receive_data(enc_data->in_buffer->buffer, 1);
+	spi_receive_data(enc_data->in_buffer, 1);
 	return enc_data->in_buffer->buffer[0];
 }
