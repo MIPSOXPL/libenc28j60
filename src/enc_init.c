@@ -44,3 +44,15 @@ bool enc_init_receive_buffer(enc_data_t* enc_data, uint16_t receive_buffer_offse
     }
     return false;
 }
+
+bool enc_init_receive_filter(enc_data_t* enc_data, uint8_t filters_value)
+{
+	if(enc_is_data_valid(enc_data))
+	{
+		enc_select_bank(enc_data, ENC_1_BANK);
+		enc_write_control_register(enc_data->out_buffer, ENC_ERXFCON_REG_ADDR, filters_value);
+		spi_send_data(enc_data->out_buffer);
+		return true;
+	}
+	return false;
+}
