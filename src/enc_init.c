@@ -36,16 +36,16 @@ bool enc_init_receive_buffer(enc_data_t* enc_data, uint16_t receive_buffer_offse
         spi_send_data(enc_data->out_buffer);
 
         //Program readout pointer (lower byte first)
-        enc_write_control_register(enc_data->out_buffer, ENC_ERXRDPTL_REG_ADDR, ((receive_buffer_offset & 0xFF00) >> 8));
+        enc_write_control_register(enc_data->out_buffer, ENC_ERXRDPTL_REG_ADDR, ((receive_buffer_offset & 0xFF)));
         spi_send_data(enc_data->out_buffer);
-        enc_write_control_register(enc_data->out_buffer, ENC_ERXRDPTH_REG_ADDR, (receive_buffer_offset & 0x00FF));
+        enc_write_control_register(enc_data->out_buffer, ENC_ERXRDPTH_REG_ADDR, (receive_buffer_offset & 0xFF00) >> 8);
         spi_send_data(enc_data->out_buffer);
         return true;
     }
     return false;
 }
 
-bool enc_init_receive_filter(enc_data_t* enc_data, uint8_t filters_value)
+bool enc_init_receive_filters(enc_data_t* enc_data, uint8_t filters_value)
 {
 	if(enc_is_data_valid(enc_data))
 	{
@@ -55,4 +55,55 @@ bool enc_init_receive_filter(enc_data_t* enc_data, uint8_t filters_value)
 		return true;
 	}
 	return false;
+}
+
+bool enc_init_settings(enc_data_t* enc_data, enc_settings* settings)
+{
+	enc_select_bank(enc_data, ENC_2_BANK);
+
+	enc_write_control_register(enc_data->out_buffer, ENC_MACON1_REG_ADDR, 13);
+	spi_send_data(enc_data->out_buffer);
+
+	enc_write_control_register(enc_data->out_buffer, ENC_MACON3_REG_ADDR, 241);
+	spi_send_data(enc_data->out_buffer);
+
+	enc_write_control_register(enc_data->out_buffer, ENC_MACON4_REG_ADDR, 64);
+	spi_send_data(enc_data->out_buffer);
+
+	enc_write_control_register(enc_data->out_buffer, ENC_MAMXFLH_REG_ADDR, settings->max_frame_length >> 8);
+	spi_send_data(enc_data->out_buffer);
+
+	enc_write_control_register(enc_data->out_buffer, ENC_MAMXFLL_REG_ADDR, settings->max_frame_length & 0xFF);
+	spi_send_data(enc_data->out_buffer);
+
+	enc_write_control_register(enc_data->out_buffer, ENC_MABBIPG_REG_ADDR, 21);
+	spi_send_data(enc_data->out_buffer);
+
+	enc_write_control_register(enc_data->out_buffer, ENC_MAIPGL_REG_ADDR, 18);
+	spi_send_data(enc_data->out_buffer);
+
+	_enc_write_mac(enc_data, settings->MAC);
+}
+void enc_init_wait_for_ost(enc_data_t* enc_data)
+{
+	while((enc_get_estat(enc_data) & 1) != 1);
+}
+
+
+void _enc_write_mac(enc_data_t* enc_data, uint8_t* mac)
+{
+	enc_select_bank(enc_data, ENC_3_BANK);
+
+	enc_write_control_register(enc_data->out_buffer, ENC_MAADR1_REG_ADDR, mac[0]);
+	spi_send_data(enc_data->out_buffer);
+	enc_write_control_register(enc_data->out_buffer, ENC_MAADR2_REG_ADDR, mac[1]);
+	spi_send_data(enc_data->out_buffer);
+	enc_write_control_register(enc_data->out_buffer, ENC_MAADR3_REG_ADDR, mac[2]);
+	spi_send_data(enc_data->out_buffer);
+	enc_write_control_register(enc_data->out_buffer, ENC_MAADR4_REG_ADDR, mac[3]);
+	spi_send_data(enc_data->out_buffer);
+	enc_write_control_register(enc_data->out_buffer, ENC_MAADR5_REG_ADDR, mac[4]);
+	spi_send_data(enc_data->out_buffer);
+	enc_write_control_register(enc_data->out_buffer, ENC_MAADR6_REG_ADDR, mac[5]);
+	spi_send_data(enc_data->out_buffer);
 }

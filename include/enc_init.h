@@ -25,11 +25,25 @@ typedef enum {
 	unicast_filter 			= 0x80
 } enc_filters;
 
+typedef struct{
+	uint8_t MAC[6];
+	uint16_t max_frame_length;
+} enc_settings;
+
 bool enc_init_receive_buffer(enc_data_t* enc_data, uint16_t receive_buffer_offset, uint16_t receive_buffer_size);
 
 /**
  * @brief Default filters are: broadcast_filter, post_crc_check_filter, unicast_filter
  */
-bool enc_init_receive_filters(enc_data_t*, uint8_t filters_value);
+bool enc_init_receive_filters(enc_data_t* enc_data, uint8_t filters_value);
+
+bool enc_init_settings(enc_data_t* enc_data, enc_settings* settings);
+
+void enc_init_wait_for_ost(enc_data_t* enc_data);
+
+// private helpers functions
+
+void _enc_write_mac(enc_data_t* enc_data, uint8_t* mac);
+
 
 #endif //ENC_INIT_H
