@@ -13,7 +13,6 @@
 #define ENC_COMMAND_BUILDER_H
 
 #include "enc_data.h"
-#include "enc_buffer.h"
 
 typedef enum {
     read_control_opcode = 0x00,
@@ -37,8 +36,5 @@ bool enc_write_buffer_register(enc_buffer_t* buffer_struct, uint16_t data_size, 
 bool enc_set_bit(enc_buffer_t* buffer_struct, uint8_t address, uint8_t mask);
 bool enc_clear_bit(enc_buffer_t* buffer_struct, uint8_t address, uint8_t mask);
 bool enc_reset(enc_buffer_t* buffer_struct);
-
-uint16_t enc_read_phy_register(enc_data_t* enc_data, uint8_t address);
-bool enc_write_phy_register(enc_data_t* enc_data, uint8_t address, uint16_t value);
 
 #endif //ENC_COMMAND_BUILDER_H

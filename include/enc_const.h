@@ -1,4 +1,4 @@
-/**
+	/**
  * @file enc_const.h
  * @author Sławomir Kozok (slawomir.kozok@mipso.pl)
  * @brief This file constants used for driver
