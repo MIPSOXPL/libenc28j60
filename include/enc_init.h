@@ -12,7 +12,8 @@
 #ifndef ENC_INIT_H
 #define ENC_INIT_H
 
-#include "enc_data.h"
+#include <stdint.h>
+#include <stdbool.h>
 
 typedef enum {
     broadcast_filter 		= 0x01,
@@ -28,24 +29,27 @@ typedef enum {
 typedef struct{
 	uint8_t MAC[6];
 	uint16_t max_frame_length;
+	uint8_t enc_filters;
 } enc_settings;
 
-bool enc_init_receive_buffer(enc_data_t* enc_data, uint16_t receive_buffer_offset, uint16_t receive_buffer_size);
+bool enc_init(enc_settings* settings);
+
+bool enc_init_receive_buffer(uint16_t receive_buffer_offset, uint16_t receive_buffer_size);
 
 /**
  * @brief Default filters are: broadcast_filter, post_crc_check_filter, unicast_filter
  */
-bool enc_init_receive_filters(enc_data_t* enc_data, uint8_t filters_value);
+bool enc_init_receive_filters(uint8_t filters_value);
 
-bool enc_init_settings(enc_data_t* enc_data, enc_settings* settings);
+bool enc_init_settings(enc_settings* settings);
 
-bool enc_init_phy(enc_data_t* enc_data);
+bool enc_init_phy();
 
-void enc_init_wait_for_ost(enc_data_t* enc_data);
+void enc_init_wait_for_ost();
 
 // private helpers functions
 
-void _enc_write_mac(enc_data_t* enc_data, uint8_t* mac);
+void _enc_write_mac(uint8_t* mac);
 
 
 #endif //ENC_INIT_H

@@ -21,8 +21,8 @@ uint8_t read_control_register(uint8_t address)
 {
 	enc_read_control_register(&buffer, address);
 	spi_reset_enc_nss();
-	bool temp = spi_send_data(&buffer);
-	temp = spi_receive_data(&buffer, 1);
+	spi_send_data(&buffer);
+	spi_receive_data(&buffer, 1);
 	spi_set_enc_nss();
 	return buffer.buffer[0];
 }

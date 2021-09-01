@@ -18,42 +18,40 @@
 #include "stdint.h"
 #include "stdbool.h"
 
-bool enc_init_receive_buffer(enc_data_t* enc_data, uint16_t receive_buffer_offset, uint16_t receive_buffer_size)
+bool enc_init(enc_settings* settings)
 {
-    if(enc_is_data_valid(enc_data))
-    {
+	enc_init_receive_buffer(0, ENC_BUFFER_SIZE);
+	enc_init_receive_filters(settings->enc_filters);
+	enc_init_wait_for_ost();
+	enc_init_settings(settings);
+	enc_init_phy();
+	return true;
+}
+
+bool enc_init_receive_buffer(uint16_t receive_buffer_offset, uint16_t receive_buffer_size)
+{
         //Program buffers size
-        enc_select_bank(ENC_0_BANK);
-        write_control_register(ENC_ERXSTH_REG_ADDR, (receive_buffer_offset & 0xFF00) >> 8);
-        write_control_register(ENC_ERXSTL_REG_ADDR, (receive_buffer_offset & 0x00FF));
-        write_control_register(ENC_ERXNDH_REG_ADDR, ((receive_buffer_offset + receive_buffer_size) & 0xFF00) >> 8);
-        write_control_register(ENC_ERXNDL_REG_ADDR, ((receive_buffer_offset + receive_buffer_size) & 0x00FF));
+	enc_select_bank(ENC_0_BANK);
+    write_control_register(ENC_ERXSTH_REG_ADDR, (receive_buffer_offset & 0xFF00) >> 8);
+    write_control_register(ENC_ERXSTL_REG_ADDR, (receive_buffer_offset & 0x00FF));
+    write_control_register(ENC_ERXNDH_REG_ADDR, ((receive_buffer_offset + receive_buffer_size) & 0xFF00) >> 8);
+    write_control_register(ENC_ERXNDL_REG_ADDR, ((receive_buffer_offset + receive_buffer_size) & 0x00FF));
 
-        //Program readout pointer (lower byte first)
-        write_control_register(ENC_ERXRDPTL_REG_ADDR, ((receive_buffer_offset & 0xFF)));
-        write_control_register(ENC_ERXRDPTH_REG_ADDR, (receive_buffer_offset & 0xFF00) >> 8);
-
-        return true;
-    }
-    return false;
+    //Program readout pointer (lower byte first)
+    write_control_register(ENC_ERXRDPTL_REG_ADDR, ((receive_buffer_offset & 0xFF)));
+    write_control_register(ENC_ERXRDPTH_REG_ADDR, (receive_buffer_offset & 0xFF00) >> 8);
+    return true;
 }
 
-bool enc_init_receive_filters(enc_data_t* enc_data, uint8_t filters_value)
+bool enc_init_receive_filters(uint8_t filters_value)
 {
-	if(enc_is_data_valid(enc_data))
-	{
-		enc_select_bank(ENC_1_BANK);
-		write_control_register(ENC_ERXFCON_REG_ADDR, filters_value);
-		return true;
-	}
-	return false;
+	enc_select_bank(ENC_1_BANK);
+	write_control_register(ENC_ERXFCON_REG_ADDR, filters_value);
+	return true;
 }
 
-bool enc_init_settings(enc_data_t* enc_data, enc_settings* settings)
+bool enc_init_settings(enc_settings* settings)
 {
-    if(!enc_is_data_valid(enc_data)){
-    	return false;
-    }
 	enc_select_bank(ENC_2_BANK);
 
 	write_control_register(ENC_MACON1_REG_ADDR, 13);
@@ -64,26 +62,23 @@ bool enc_init_settings(enc_data_t* enc_data, enc_settings* settings)
 	write_control_register(ENC_MABBIPG_REG_ADDR, 21);
 	write_control_register(ENC_MAIPGL_REG_ADDR, 18);
 
-	_enc_write_mac(enc_data, settings->MAC);
+	_enc_write_mac(settings->MAC);
 
 	return true;
 }
 
-bool enc_init_phy(enc_data_t* enc_data)
+bool enc_init_phy()
 {
-    if(!enc_is_data_valid(enc_data)){
-    	return false;
-    }
     write_phy_register(ENC_PHCON1_REG_ADDR, 256);
     return true;
 }
 
-void enc_init_wait_for_ost(enc_data_t* enc_data)
+void enc_init_wait_for_ost()
 {
 	while((read_control_register(ENC_G_ESTAT_REG_ADDR) & 1) == 0);
 }
 
-void _enc_write_mac(enc_data_t* enc_data, uint8_t* mac)
+void _enc_write_mac(uint8_t* mac)
 {
 	enc_select_bank(ENC_3_BANK);
 

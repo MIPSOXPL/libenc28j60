@@ -11,18 +11,18 @@
 
 #include "enc_hardware_integration.h"
 
-extern SPI_HandleTypeDef hspi2;
+extern SPI_HandleTypeDef hspi1;
 
 __attribute__((weak)) bool spi_send_data(__attribute__((unused)) enc_buffer_t* enc_buffer)
 {
-	return HAL_SPI_Transmit(&hspi2, enc_buffer->buffer, enc_buffer->buffer_data_counter, 0xFFFFFFFF) == HAL_OK;
+	return HAL_SPI_Transmit(&hspi1, enc_buffer->buffer, enc_buffer->buffer_data_counter, 0xFFFFFFFF) == HAL_OK;
 }
 
 __attribute__((weak)) bool spi_receive_data(__attribute__((unused)) enc_buffer_t* enc_buffer,
                                             __attribute__((unused)) uint16_t data_length)
 {
 	enc_buffer->buffer_data_counter = data_length;
-	HAL_StatusTypeDef val = HAL_SPI_Receive(&hspi2, enc_buffer->buffer, data_length, 0xFFFFFFFF);
+	HAL_StatusTypeDef val = HAL_SPI_Receive(&hspi1, enc_buffer->buffer, data_length, 0xFFFFFFFF);
 	return val == HAL_OK;
 }
 

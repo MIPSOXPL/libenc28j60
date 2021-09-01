@@ -19,8 +19,8 @@
 #include "stm32g4xx_hal.h"
 
 
-#define NSS_PORT GPIOB
-#define NSS_PIN GPIO_PIN_12
+#define NSS_PORT GPIOA
+#define NSS_PIN GPIO_PIN_4
 
 bool spi_send_data(enc_buffer_t* enc_buffer);
 bool spi_receive_data(enc_buffer_t* enc_buffer, uint16_t data_length);
