@@ -21,6 +21,8 @@
 typedef struct {
     enc_buffer_t* in_buffer;
     enc_buffer_t* out_buffer;
+    uint16_t loc;
+    bool link_status;
 } enc_data_t;
 
 bool enc_data_init(enc_data_t* enc_data, enc_buffer_t* in_buffer, enc_buffer_t* out_buffer);

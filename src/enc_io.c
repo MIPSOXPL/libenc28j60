@@ -46,25 +46,41 @@ bool write_control_register(uint8_t address, uint8_t value)
 	return true;
 }
 
-bool read_buffer_register(uint16_t start_address, enc_buffer_t* buffer, uint16_t data_length)
+bool read_buffer_register(uint16_t start_address, uint8_t* save_here, uint16_t data_length)
 {
 	_set_buffer_rx_pointer_start(start_address);
-	enc_read_buffer_register(buffer);
+	enc_read_buffer_register(&buffer);
 	spi_reset_enc_nss();
-	spi_receive_data(buffer, data_length);
+	spi_send_data(&buffer);
+	spi_receive_data2(save_here, data_length);
 	spi_set_enc_nss();
 	return true;
 }
 
-bool write_buffer_register(uint16_t start_address, enc_buffer_t* buffer, uint8_t* input_data, uint16_t data_size)
+bool write_buffer_register(uint16_t start_address, uint8_t* input_data, uint16_t data_size)
 {
+	enc_select_bank(ENC_0_BANK);
+	write_control_register(ENC_EWRPTL_REG_ADDR, (start_address & 0xFF));
+	write_control_register(ENC_EWRPTH_REG_ADDR, (start_address >> 8));
+
 	_set_buffer_tx_pointer_start(start_address);
-	enc_write_buffer_register(buffer, data_size, input_data);
-	_set_buffer_tx_pointer_end(start_address + data_size);
+
+	enc_write_buffer_register(&buffer);
+
 	spi_reset_enc_nss();
-	spi_send_data(buffer);
+	spi_send_data(&buffer);
+	spi_send_data2(input_data, data_size);
 	spi_set_enc_nss();
 	return true;
+}
+
+bool write_continous_buffer_register(uint8_t* input_data, uint16_t data_size)
+{
+	enc_write_buffer_register(&buffer);
+	spi_reset_enc_nss();
+	spi_send_data(&buffer);
+	spi_send_data2(input_data, data_size);
+	spi_set_enc_nss();
 }
 
 bool set_bit(uint8_t address, uint8_t mask)

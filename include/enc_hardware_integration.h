@@ -23,7 +23,9 @@
 #define NSS_PIN GPIO_PIN_4
 
 bool spi_send_data(enc_buffer_t* enc_buffer);
+bool spi_send_data2(uint8_t* data, uint16_t data_size);
 bool spi_receive_data(enc_buffer_t* enc_buffer, uint16_t data_length);
+bool spi_receive_data2(uint8_t* buffer, uint16_t data_length);
 
 void spi_set_enc_nss();
 void spi_reset_enc_nss();

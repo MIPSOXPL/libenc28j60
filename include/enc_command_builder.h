@@ -32,7 +32,7 @@ typedef enum {
 bool enc_read_control_register(enc_buffer_t* buffer_struct, uint8_t address);
 bool enc_read_buffer_register(enc_buffer_t* buffer_struct);
 bool enc_write_control_register(enc_buffer_t* buffer_struct, uint8_t address, uint8_t data);
-bool enc_write_buffer_register(enc_buffer_t* buffer_struct, uint16_t data_size, uint8_t* input_buffer);
+bool enc_write_buffer_register(enc_buffer_t* buffer_struct);
 bool enc_set_bit(enc_buffer_t* buffer_struct, uint8_t address, uint8_t mask);
 bool enc_clear_bit(enc_buffer_t* buffer_struct, uint8_t address, uint8_t mask);
 bool enc_reset(enc_buffer_t* buffer_struct);

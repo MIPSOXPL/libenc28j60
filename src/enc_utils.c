@@ -31,3 +31,14 @@ bool enc_select_bank(uint8_t bank)
     }
     return false;
 }
+
+bool enc_link_status()
+{
+	return read_phy_register(ENC_PHSTAT1_REG_ADDR) & 4;
+}
+
+bool enc_received_packet()
+{
+	enc_select_bank(ENC_1_BANK);
+	return read_control_register(ENC_EPKTCNT_REG_ADDR);
+}

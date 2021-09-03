@@ -17,8 +17,9 @@ uint8_t read_control_register(uint8_t address);
 uint8_t read_control_register2(uint8_t address);
 bool write_control_register(uint8_t address, uint8_t value);
 
-bool read_buffer_register(uint16_t start_address, enc_buffer_t* buffer, uint16_t data_length);
-bool write_buffer_register(uint16_t start_address, enc_buffer_t* buffer, uint8_t* input_data, uint16_t data_size);
+bool read_buffer_register(uint16_t start_address, uint8_t* save_here, uint16_t data_length);
+bool write_buffer_register(uint16_t start_address, uint8_t* input_data, uint16_t data_size);
+bool write_continous_buffer_register(uint8_t* input_data, uint16_t data_size);
 
 bool set_bit(uint8_t address, uint8_t mask);
 bool clear_bit(uint8_t address, uint8_t mask);

@@ -54,15 +54,14 @@ bool enc_write_control_register(enc_buffer_t* buffer_struct, uint8_t address, ui
     return false;
 }
 
-bool enc_write_buffer_register(enc_buffer_t* buffer_struct, uint16_t data_size, uint8_t* input_buffer)
+bool enc_write_buffer_register(enc_buffer_t* buffer_struct)
 {
-    if(enc_is_buffer_valid(buffer_struct) && buffer_struct->buffer_size >= 1 + data_size && input_buffer != NULL)
+    if(enc_is_buffer_valid(buffer_struct) && buffer_struct->buffer_size >= 1)
     {
         //Set first byte
         buffer_struct->buffer[0] = (write_buffer_opcode << 5) | buffer_argument;
         //Copy data bytes
-        memcpy(buffer_struct->buffer + 1, input_buffer, data_size);
-        enc_set_buffer_data_count(buffer_struct, 1 + data_size);
+        enc_set_buffer_data_count(buffer_struct, 1);
         return true;
     }
     return false;

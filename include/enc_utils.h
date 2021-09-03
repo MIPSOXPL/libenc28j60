@@ -19,4 +19,8 @@
 
 bool enc_select_bank(uint8_t bank);
 
+bool enc_link_status();
+
+bool enc_received_packet();
+
 #endif //ENC_UTILS_H

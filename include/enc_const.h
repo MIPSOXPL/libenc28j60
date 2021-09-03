@@ -60,7 +60,7 @@
 #define ENC_EPMOL_REG_ADDR      0x14
 #define ENC_EPMOH_REG_ADDR      0x15
 #define ENC_ERXFCON_REG_ADDR    0x18
-#define ENC_EKPTCNT_REG_ADDR    0x19
+#define ENC_EPKTCNT_REG_ADDR    0x19
 
 #define ENC_2_BANK              0x02
 #define ENC_MACON1_REG_ADDR     0x00

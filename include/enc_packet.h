@@ -12,19 +12,9 @@
 #define ENC_PACKET_H
 
 #include "enc_data.h"
+#include "my_ethernet.h"
 
-#define START_BUFFER_TX 0x120
+bool enc_send_packet(uint8_t* data, uint16_t data_size);
 
-bool enc_send_packet(enc_data_t* t, uint8_t* data, uint16_t data_size);
-
-bool enc_receive_packet(enc_data_t* t);
-
-
-// PRIVATE HELPER METHODS
-
-static void start_transmission();
-static void read_status_vector(enc_buffer_t* buffer, uint8_t* save_here, uint16_t start_reading_from_here);
-
-
-
+pbuf* enc_receive_packet(enc_data_t* t);
 #endif

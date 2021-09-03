@@ -19,6 +19,8 @@ bool enc_data_init(enc_data_t* enc_data, enc_buffer_t* in_buffer, enc_buffer_t* 
         {
             enc_data->in_buffer = in_buffer;
             enc_data->out_buffer = out_buffer;
+            enc_data->loc = 0;
+            enc_data->link_status = false;
             return true;
         }
     }
